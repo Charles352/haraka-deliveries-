@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Haraka – Fast Errands & Deliveries in Nairobi</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Bebas+Neue&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* ── TOKENS ── */
+  :root {
+    --black:    #0D0D0D;
+    --white:    #F7F5F0;
+    --saffron:  #F5A623;
+    --terracotta: #C0392B;
+    --sage:     #2C5F2E;
+    --mid:      #3A3A3A;
+    --muted:    #888;
+    --radius:   4px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 5vw;
+    background: rgba(13,13,13,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(245,166,35,0.15);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.08em;
+    color: var(--saffron);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--white); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+  }
+
+  nav ul a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    transition: opacity 0.2s, color 0.2s;
+  }
+
+  nav ul a:hover { opacity: 1; color: var(--saffron); }
+
+  .nav-cta {
+    background: var(--saffron);
+    color: var(--black) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: var(--radius);
+    opacity: 1 !important;
+    font-weight: 700 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: #e0920f !important; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 10rem 5vw 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Matatu-grid background pattern */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(245,166,35,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,166,35,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .hero-inner {
+    position: relative;
+    max-width: 860px;
+  }
+
+  .eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--saffron);
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.3);
+    padding: 0.35rem 0.8rem;
+    border-radius: 2px;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4rem, 10vw, 8.5rem);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--saffron);
+    -webkit-text-stroke: 0;
+  }
+
+  h1 .outline {
+    -webkit-text-stroke: 2px var(--white);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: rgba(247,245,240,0.65);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--saffron);
+    color: var(--black);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 0.9rem 2rem;
+    border: none;
+    border-radius: var(--radius);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: #e0920f; transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1.5px solid rgba(247,245,240,0.3);
+    color: var(--white);
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.9rem 2rem;
+    border-radius: var(--radius);
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--saffron); color: var(--saffron); }
+
+  /* ── TICKER ── */
+  .ticker-wrap {
+    background: var(--saffron);
+    overflow: hidden;
+    padding: 0.7rem 0;
+    white-space: nowrap;
+  }
+
+  .ticker {
+    display: inline-flex;
+    gap: 3rem;
+    animation: ticker 22s linear infinite;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    color: var(--black);
+  }
+
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .ticker-dot { color: var(--terracotta); }
+
+  /* ── SECTION BASE ── */
+  section { padding: 6rem 5vw; }
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.03em;
+    line-height: 1.05;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ── SERVICES ── */
+  .services { background: #111; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5px;
+    margin-top: 3.5rem;
+    background: rgba(245,166,35,0.12);
+    border: 1.5px solid rgba(245,166,35,0.12);
+  }
+
+  .service-card {
+    background: #111;
+    padding: 2.5rem 2rem;
+    transition: background 0.25s;
+  }
+  .service-card:hover { background: #161616; }
+
+  .service-icon {
+    font-size: 2.2rem;
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+
+  .service-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--white);
+  }
+
+  .service-card p {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--black); }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 3rem;
+    margin-top: 4rem;
+    position: relative;
+  }
+
+  .step { position: relative; }
+
+  .step-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    line-height: 1;
+    color: rgba(245,166,35,0.12);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .step h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--saffron);
+  }
+
+  .step p { font-size: 0.88rem; color: var(--muted); }
+
+  /* ── COVERAGE ── */
+  .coverage {
+    background: var(--sage);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .coverage::before {
+    content: 'NAIROBI';
+    position: absolute;
+    right: -2%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(6rem, 18vw, 14rem);
+    letter-spacing: 0.05em;
+    color: rgba(0,0,0,0.18);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .coverage-inner { position: relative; max-width: 680px; }
+
+  .coverage p {
+    font-size: 1.05rem;
+    color: rgba(247,245,240,0.8);
+    margin-bottom: 2rem;
+    line-height: 1.8;
+  }
+
+  .zones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 2rem;
+  }
+
+  .zone-tag {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 0.35rem 0.9rem;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── WHY US ── */
+  .why { background: #0a0a0a; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+    align-items: start;
+  }
+
+  .why-list { list-style: none; }
+
+  .why-list li {
+    padding: 1.2rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    font-size: 0.95rem;
+    color: rgba(247,245,240,0.8);
+  }
+
+  .why-list li .check {
+    color: var(--saffron);
+    font-size: 1rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .why-stat-box {
+    background: var(--saffron);
+    color: var(--black);
+    padding: 3rem 2.5rem;
+    border-radius: var(--radius);
+  }
+
+  .why-stat-box .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4.5rem;
+    line-height: 1;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .why-stat-box p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(13,13,13,0.7);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .divider { border: none; border-top: 1px solid rgba(0,0,0,0.2); margin: 1.5rem 0; }
+
+  /* ── CONTACT ── */
+  .contact {
+    background: var(--black);
+    text-align: center;
+  }
+
+  .contact h2 { margin-bottom: 0.8rem; }
+
+  .contact .sub {
+    color: var(--muted);
+    margin-bottom: 3rem;
+    font-size: 1rem;
+  }
+
+  .contact-cards {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .contact-card {
+    background: #141414;
+    border: 1px solid rgba(245,166,35,0.15);
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    text-decoration: none;
+    color: var(--white);
+    transition: border-color 0.2s, background 0.2s;
+    min-width: 220px;
+  }
+  .contact-card:hover { border-color: var(--saffron); background: #191919; }
+
+  .contact-card .c-icon { font-size: 1.8rem; margin-bottom: 0.8rem; display: block; }
+
+  .contact-card .c-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 0.3rem;
+    display: block;
+  }
+
+  .contact-card .c-value {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080808;
+    padding: 2.5rem 5vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  footer .logo { font-size: 1.4rem; }
+
+  footer p {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 680px) {
+    nav ul { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .hero { padding: 8rem 5vw 5rem; }
+  }
+
+  /* ── REDUCED MOTION ── */
+  @media (prefers-reduced-motion: reduce) {
+    .ticker { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">Haraka<span>.</span></a>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#coverage">Coverage</a></li>
+    <li><a href="#contact" class="nav-cta">Book a Run</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">Nairobi's fastest errand runners</span>
+    <h1>
+      We Run<br>
+      <em>So You</em><br>
+      <span class="outline">Don't Have To</span>
+    </h1>
+    <p class="hero-sub">
+      Haraka handles your deliveries, errands, and pickups across Nairobi — and beyond. Fast, reliable, and tracked every step of the way.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book an Errand</a>
+      <a href="#services" class="btn-outline">See What We Do</a>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker">
+    <span>FAST DELIVERIES</span><span class="ticker-dot">✦</span>
+    <span>NAIROBI &amp; BEYOND</span><span class="ticker-dot">✦</span>
+    <span>SAME-DAY ERRANDS</span><span class="ticker-dot">✦</span>
+    <span>TRUSTED RIDERS</span><span class="ticker-dot">✦</span>
+    <span>REAL-TIME UPDATES</span><span class="ticker-dot">✦</span>
+    <span>FAST DELIVERIES</span><span class="ticker-dot">✦</span>
+    <span>NAIROBI &amp; BEYOND</span><span class="ticker-dot">✦</span>
+    <span>SAME-DAY ERRANDS</span><span class="ticker-dot">✦</span>
+    <span>TRUSTED RIDERS</span><span class="ticker-dot">✦</span>
+    <span>REAL-TIME UPDATES</span><span class="ticker-dot">✦</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <p class="section-label">What We Do</p>
+  <h2>Every Errand,<br>Handled.</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-icon">📦</span>
+      <h3>Package Delivery</h3>
+      <p>Same-day and next-day delivery of parcels, documents, and goods within Nairobi and upcountry.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🛒</span>
+      <h3>Grocery & Shopping</h3>
+      <p>Send us your list — we shop at your preferred supermarket or market and deliver straight to your door.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🏦</span>
+      <h3>Banking & Bill Payments</h3>
+      <p>Queue-free banking errands, utility payments, and KRA services handled on your behalf.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🍽️</span>
+      <h3>Food Pickup</h3>
+      <p>We collect from your favourite restaurant or mama mboga and bring it right to you — hot and fresh.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">💊</span>
+      <h3>Pharmacy Runs</h3>
+      <p>Prescription or over-the-counter medication picked up and delivered fast — because health can't wait.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-icon">🚗</span>
+      <h3>Custom Errands</h3>
+      <p>Government offices, courier collections, court filings, or anything else you can't be there for in person.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <p class="section-label">The Process</p>
+  <h2>Three Steps,<br>Zero Hassle.</h2>
+  <div class="steps">
+    <div class="step">
+      <span class="step-num">01</span>
+      <h3>Tell Us What You Need</h3>
+      <p>Call, WhatsApp, or email us with your errand details — pickup location, destination, and any instructions.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">02</span>
+      <h3>We Dispatch a Runner</h3>
+      <p>A vetted Haraka rider is assigned immediately. You get a confirmation and can track progress.</p>
+    </div>
+    <div class="step">
+      <span class="step-num">03</span>
+      <h3>Done — Confirm &amp; Pay</h3>
+      <p>We send a delivery confirmation. Pay via M-Pesa, cash, or card — simple and secure.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section class="coverage" id="coverage">
+  <div class="coverage-inner">
+    <p class="section-label">Coverage</p>
+    <h2>Nairobi &amp;<br>Beyond.</h2>
+    <p>
+      We operate across all major Nairobi neighbourhoods, suburbs, and satellite towns — and we go further when you need us to. Regular routes to Thika, Kiambu, Machakos, Nakuru, and other key towns across Kenya.
+    </p>
+    <a href="#contact" class="btn-primary">Check Your Area</a>
+    <div class="zones">
+      <span class="zone-tag">CBD</span>
+      <span class="zone-tag">Westlands</span>
+      <span class="zone-tag">Karen</span>
+      <span class="zone-tag">Kilimani</span>
+      <span class="zone-tag">Lavington</span>
+      <span class="zone-tag">Eastleigh</span>
+      <span class="zone-tag">Kasarani</span>
+      <span class="zone-tag">Embakasi</span>
+      <span class="zone-tag">Ruaka</span>
+      <span class="zone-tag">Kikuyu</span>
+      <span class="zone-tag">Thika</span>
+      <span class="zone-tag">Kiambu</span>
+      <span class="zone-tag">Machakos</span>
+      <span class="zone-tag">Nakuru</span>
+      <span class="zone-tag">+ More</span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY HARAKA -->
+<section class="why">
+  <p class="section-label">Why Haraka</p>
+  <h2>Speed Without<br>Shortcuts.</h2>
+  <div class="why-grid">
+    <ul class="why-list">
+      <li><span class="check">✦</span><span><strong>Vetted riders</strong> — every Haraka runner is background-checked and trained.</span></li>
+      <li><span class="check">✦</span><span><strong>Live updates</strong> — you're kept in the loop via WhatsApp or SMS at every stage.</span></li>
+      <li><span class="check">✦</span><span><strong>No hidden fees</strong> — we quote upfront, every time.</span></li>
+      <li><span class="check">✦</span><span><strong>Flexible payments</strong> — M-Pesa, cash on delivery, or bank transfer.</span></li>
+      <li><span class="check">✦</span><span><strong>Same-day service</strong> — most errands completed within hours, not days.</span></li>
+      <li><span class="check">✦</span><span><strong>Corporate accounts</strong> — regular businesses get dedicated riders and monthly invoicing.</span></li>
+    </ul>
+    <div class="why-stat-box">
+      <span class="big">2 Hrs</span>
+      <p>Average errand completion time within Nairobi CBD and inner suburbs.</p>
+      <hr class="divider">
+      <span class="big">100%</span>
+      <p>Of our riders are trained, insured, and carry company ID on every run.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="section-label">Get in Touch</p>
+  <h2>Let's Get Moving.</h2>
+  <p class="sub">Reach us on WhatsApp, call, or email — we respond fast.</p>
+  <div class="contact-cards">
+    <a href="tel:+254110344265" class="contact-card">
+      <span class="c-icon">📞</span>
+      <span class="c-label">Call / WhatsApp</span>
+      <span class="c-value">0110 344 265</span>
+    </a>
+    <a href="mailto:charleschege455@gmail.com" class="contact-card">
+      <span class="c-icon">✉️</span>
+      <span class="c-label">Email Us</span>
+      <span class="c-value">charleschege455@gmail.com</span>
+    </a>
+  </div>
+  <a href="https://wa.me/254110344265?text=Hi%20Haraka%2C%20I%20need%20an%20errand%20done." class="btn-primary" target="_blank" rel="noopener">
+    WhatsApp Us Now
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#" class="logo">Haraka<span>.</span></a>
+  <p>Fast errands &amp; deliveries across Nairobi and Kenya.</p>
+  <p>© 2026 Haraka Deliveries. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
